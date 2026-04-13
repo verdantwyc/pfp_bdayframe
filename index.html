@@ -532,15 +532,15 @@ footer {
 <script>
 // ─── CONFIG ─────────────────────────────────────────────
 
-const FRAME_URL   = 'https://i.ibb.co/4Z1qCvvP/nasa-frame.png';
-const EXPORT_SIZE = 1500;   // 输出尺寸 1500x1500
+const FRAME_URL   = 'https://i.ibb.co/WvcXsN06/frame.png';
+const EXPORT_SIZE = 1080;   // 输出尺寸 1080*1080
 const USER_FONT   = 'ZCOOL XiaoWei';
 
 // ─── STATE ──────────────────────────────────────────────
 let cropper         = null;
 let canvas          = null;
 let originalB64     = null;
-let photoDataUrl1500= null; // 储存 1500x1500 尺寸的裁切结果
+let photoDataUrl1080= null; // 储存1080*1080尺寸的裁切结果
 let frameObj        = null; // 被锁定的最上层头像框
 let photoObj        = null; // 最底层的图片
 
@@ -623,7 +623,7 @@ function showCropper(src) {
 function goToStep2() {
   if (!cropper) return;
   
-  photoDataUrl1500 = cropper.getCroppedCanvas({ width: EXPORT_SIZE, height: EXPORT_SIZE }).toDataURL('image/png');
+  photoDataUrl1080 = cropper.getCroppedCanvas({ width: EXPORT_SIZE, height: EXPORT_SIZE }).toDataURL('image/png');
   const previewData = cropper.getCroppedCanvas({ width: 800, height: 800 }).toDataURL('image/png');
 
   document.getElementById('section1').classList.add('hidden');
@@ -646,7 +646,7 @@ function backToStep1() {
 function resetAll() {
   if (canvas) { try { canvas.dispose(); } catch(e){} canvas = null; }
   if (cropper) { try { cropper.destroy(); } catch(e){} cropper = null; }
-  originalB64 = null; frameObj = null; photoObj = null; photoDataUrl1500 = null;
+  originalB64 = null; frameObj = null; photoObj = null; photoDataUrl1080 = null;
   ['fileInput','stickerInput','textInput'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
@@ -846,7 +846,7 @@ function uploadSticker(e) {
 
 // ─── HIGH RES DOWNLOAD COMPOSITING ───────────────────────
 async function downloadFinal() {
-  if (!canvas || !photoDataUrl1500) return;
+  if (!canvas || !photoDataUrl1080) return;
 
   const btn = document.getElementById('downloadBtn');
   btn.textContent = '⏳ 头像处理合成中…';
@@ -863,7 +863,7 @@ async function downloadFinal() {
 
     // 绘制基底图片
     const baseImg = new Image();
-    baseImg.src = photoDataUrl1500;
+    baseImg.src = photoDataUrl1080;
     await new Promise(r => baseImg.onload = r);
 
     ctx.save();
